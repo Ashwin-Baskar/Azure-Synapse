@@ -1,0 +1,17 @@
+{
+	"name": "JSON_SQLserverless",
+	"properties": {
+		"content": {
+			"query": "SELECT JSON_VALUE(doc, '$.date_rep') AS Recorded_Date,\n           JSON_VALUE(doc, '$.cases') AS Cases,\n           JSON_VALUE(doc, '$.deaths') AS Deaths,\n           JSON_VALUE(doc, '$.countries_and_territories') AS Country\nFROM\n    OPENROWSET(\n        BULK 'https://ashwin1996storageaccount.dfs.core.windows.net/synapse/synapse/ecdc_cases.jsonl',\n        FORMAT = 'csv',\n        FIELDTERMINATOR ='0x0b',\n        FIELDQUOTE = '0x0b',\n        ROWTERMINATOR = '0x0b'\n    ) WITH (doc NVARCHAR(MAX)) as rows\n    \n    -- {\"date_rep\":\"2020-12-14\",\"day\":14,\"month\":12,\"year\":2020,\"cases\":746,\"deaths\":6,\"countries_and_territories\":\"Afghanistan\",\"geo_id\":\"AF\",\"country_territory_code\":\"AFG\",\"continent_exp\":\"Asia\",\"load_date\":\"2022-07-24 00:05:00\",\"iso_country\":\"AF\"}\nDROP EXTERNAL file format JSON_Source;\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SAMPLE_WORK_SERVERLESSSQLPOOL",
+				"poolName": "Built-in"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}
